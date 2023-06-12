@@ -1,0 +1,89 @@
+
+html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>نموذج GPT-2 لتوليد النصوص</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+      }
+      #container {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      #question-label {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      #question-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      #generate-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      #generate-button:hover {
+        background-color: #3e8e41;
+      }
+      #output-label {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+      #output-textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        height: 200px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>نموذج GPT-2 لتوليد النصوص</h1>
+      <label for="question" id="question-label">اكتب سؤالك هنا:</label>
+      <input type="text" id="question-input"><br><br>
+      <button id="generate-button">توليد النص</button><br><br>
+      <label for="output" id="output-label">النص المولد:</label>
+      <textarea id="output-textarea"></textarea>
+    </div>
+    <script>
+      const generateButton = document.getElementById("generate-button");
+      generateButton.addEventListener("click", function() {
+        const questionInput = document.getElementById("question-input");
+        fetch("/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ question: questionInput.value })
+        })
+        .then(response => response.json())
+        .then(data => {
+          const outputTextarea = document.getElementById("output-textarea");
+          outputTextarea.value = data.text;
+        });
+      });
+    </script>
+  </body>
+</html>
+
